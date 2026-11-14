@@ -1,6 +1,12 @@
 import unittest
+from pathlib import Path
 
-from downloader import ReelValidationError, error_from_stderr, validate_reel_url
+from downloader import (
+    ReelValidationError,
+    _audio_download_command,
+    error_from_stderr,
+    validate_reel_url,
+)
 
 
 class ValidateReelUrlTests(unittest.TestCase):
@@ -64,6 +70,19 @@ class ErrorMappingTests(unittest.TestCase):
         for stderr, expected_category in cases:
             with self.subTest(stderr=stderr):
                 self.assertEqual(error_from_stderr(stderr).category, expected_category)
+
+
+class AudioDownloadCommandTests(unittest.TestCase):
+    def test_forces_ipv4_and_prefers_audio_with_merge_fallback(self):
+        url = "https://www.instagram.com/reel/DWwuHPfCZ8Z/"
+        temp_dir = Path("/tmp/eureka-audio-test")
+
+        command = _audio_download_command(url, temp_dir)
+
+        self.assertIn("--force-ipv4", command)
+        self.assertEqual(command[command.index("-f") + 1], "bestaudio/bv*+ba/b")
+        self.assertEqual(command[command.index("-o") + 1], str(temp_dir / "source.%(ext)s"))
+        self.assertEqual(command[-1], url)
 
 
 if __name__ == "__main__":

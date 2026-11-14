@@ -279,7 +279,7 @@ Run the unit tests:
 python -m unittest discover -s tests -v
 ```
 
-Current result: **96 tests pass** with Python 3.12.13. Coverage includes URL validation, error mapping, audio-source selection, FFmpeg conversion, atomic storage, cleanup, locking, transcription behavior, recommendation Reel classification, OpenRouter request shape, `.env` loading, Streamlit secrets loading, HTTP error mapping, recommendation prompt/schema handling, malformed JSON, normalization and deduplication, YouTube result parsing and two-result limits, and pipeline orchestration. Audio/FFmpeg tests are skipped automatically if FFmpeg is unavailable.
+Current result: **97 tests pass** with Python 3.12.13. Coverage includes URL validation, error mapping, yt-dlp download flags, audio-source selection, FFmpeg conversion, atomic storage, cleanup, locking, transcription behavior, recommendation Reel classification, OpenRouter request shape, `.env` loading, Streamlit secrets loading, HTTP error mapping, recommendation prompt/schema handling, malformed JSON, normalization and deduplication, YouTube result parsing and two-result limits, and pipeline orchestration. Audio/FFmpeg tests are skipped automatically if FFmpeg is unavailable.
 
 Run the live audio/transcription/recommendation flow manually:
 
@@ -376,7 +376,7 @@ pip install -r requirements.txt
 python -c "import curl_cffi; print(curl_cffi.__version__)"
 ```
 
-Anonymous access is still IP-dependent. A local residential connection may work while a cloud/datacenter IP fails. This app intentionally does not add cookies or account workarounds.
+Anonymous access is still IP-dependent. A local residential connection may work while a cloud/datacenter IP fails. Instagram has also been observed returning audio-less media over IPv6 on some networks, so the downloader forces IPv4. This app intentionally does not add cookies or account workarounds.
 
 **FFmpeg is missing**  
 Install FFmpeg and confirm both commands work:

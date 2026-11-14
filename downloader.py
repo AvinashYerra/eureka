@@ -299,11 +299,8 @@ def _probe_source(path: Path) -> dict:
     }
 
 
-def _run_audio_download(url: str, temp_dir: Path) -> None:
-    _require_binary("ffmpeg")
-    _require_binary("ffprobe")
-
-    command = [
+def _audio_download_command(url: str, temp_dir: Path) -> list[str]:
+    return [
         sys.executable,
         "-m",
         "yt_dlp",
@@ -312,6 +309,7 @@ def _run_audio_download(url: str, temp_dir: Path) -> None:
         "--no-warnings",
         "--no-playlist",
         "--no-progress",
+        "--force-ipv4",
         "--socket-timeout",
         str(SOCKET_TIMEOUT_SECONDS),
         "--retries",
@@ -325,11 +323,18 @@ def _run_audio_download(url: str, temp_dir: Path) -> None:
         "--max-filesize",
         f"{MAX_FILE_SIZE_MB}M",
         "-f",
-        "bestaudio/b/bv*+ba",
+        "bestaudio/bv*+ba/b",
         "-o",
         str(temp_dir / "source.%(ext)s"),
         url,
     ]
+
+
+def _run_audio_download(url: str, temp_dir: Path) -> None:
+    _require_binary("ffmpeg")
+    _require_binary("ffprobe")
+
+    command = _audio_download_command(url, temp_dir)
 
     error_path = temp_dir / "yt-dlp.err"
     try:
