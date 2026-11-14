@@ -1,0 +1,5 @@
+streamlit==1.67.0
+yt-dlp[curl-cffi]==2026.10.26
+faster-whisper==1.2.1
+av==15.1.0
+python-dotenv==1.2.4
